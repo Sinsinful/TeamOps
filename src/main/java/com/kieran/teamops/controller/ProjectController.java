@@ -17,15 +17,28 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    // POST /api/projects
     @PostMapping
     public ProjectResponse createProject(@RequestBody CreateProjectRequest request) {
         return projectService.create(request);
     }
 
+    // GET /api/projects
     @GetMapping
     public List<ProjectResponse> getAllProjects() {
         return projectService.getAll();
     }
 
+    // GET /api/projects/{id}
+    @GetMapping("/{id}")
+    public ProjectResponse getProjectById(@PathVariable Long id) {
+        return projectService.getById(id);
+    }
 
+    // DELETE /api/projects/{id}
+    @DeleteMapping("/{id}")
+    public void deleteProject(@PathVariable Long id) {
+        projectService.delete(id);
+    }
 }
+
