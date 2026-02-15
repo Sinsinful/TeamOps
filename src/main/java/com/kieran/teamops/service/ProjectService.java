@@ -2,6 +2,7 @@ package com.kieran.teamops.service;
 
 import com.kieran.teamops.dto.CreateProjectRequest;
 import com.kieran.teamops.dto.ProjectResponse;
+import com.kieran.teamops.dto.UpdateProjectRequest;
 import com.kieran.teamops.exception.NotFoundException;
 import com.kieran.teamops.model.Project;
 import com.kieran.teamops.repository.ProjectRepository;
@@ -18,7 +19,6 @@ public class ProjectService {
     public ProjectService(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
-
 
     public ProjectResponse create(CreateProjectRequest request) {
         Project project = new Project();
@@ -47,6 +47,18 @@ public class ProjectService {
                 .orElseThrow(() -> new NotFoundException("Project not found with id " + id));
 
         return toResponse(project);
+    }
+
+    public ProjectResponse update(Long id, UpdateProjectRequest request) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Project not found with id " + id));
+
+        project.setName(request.getName());
+        project.setDescription(request.getDescription());
+
+        Project updated = projectRepository.save(project);
+        return toResponse(updated);
+
     }
 
     public void delete(Long id) {

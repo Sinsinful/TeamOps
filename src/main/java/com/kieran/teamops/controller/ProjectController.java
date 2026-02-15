@@ -2,7 +2,9 @@ package com.kieran.teamops.controller;
 
 import com.kieran.teamops.dto.CreateProjectRequest;
 import com.kieran.teamops.dto.ProjectResponse;
+import com.kieran.teamops.dto.UpdateProjectRequest;
 import com.kieran.teamops.service.ProjectService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class ProjectController {
 
     // POST /api/projects
     @PostMapping
-    public ProjectResponse createProject(@RequestBody CreateProjectRequest request) {
+    public ProjectResponse createProject(@Valid @RequestBody CreateProjectRequest request) {
         return projectService.create(request);
     }
 
@@ -34,6 +36,14 @@ public class ProjectController {
     public ProjectResponse getProjectById(@PathVariable Long id) {
         return projectService.getById(id);
     }
+
+    @PutMapping("/{id}")
+    public ProjectResponse updateProject(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateProjectRequest request) {
+        return projectService.update(id, request);
+    }
+
 
     // DELETE /api/projects/{id}
     @DeleteMapping("/{id}")
